@@ -34,7 +34,7 @@ export default async function DashboardPage() {
   const totalRevenue = paid.reduce((s, i) => s + (i.total ?? 0), 0)
   const outstanding = [...pending, ...overdue].reduce((s, i) => s + (i.total ?? 0), 0)
 
-  const today = new Date().toLocaleDateString('en-US', {
+  const today = new Date().toLocaleDateString('en-GB', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',

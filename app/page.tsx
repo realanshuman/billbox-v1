@@ -140,8 +140,9 @@ export default function LandingPage() {
                       <span className="text-xs font-medium text-gray-700 w-32">{row.num}</span>
                       <span className="text-xs text-gray-400 flex-1">{row.customer}</span>
                       <span className="text-xs font-medium text-gray-900 w-16 text-right">{row.amount}</span>
-                      <span className={`ml-3 text-[8px] font-semibold uppercase tracking-widest border rounded-sm px-1.5 py-0.5 ${row.cls}`}>
-                        + {row.status}
+                      <span className={`ml-3 inline-flex items-center gap-1 text-[8px] font-semibold uppercase tracking-widest border rounded-sm px-1.5 py-0.5 ${row.cls}`}>
+                        <span className="w-0.5 h-0.5 rounded-full bg-current" />
+                        {row.status}
                       </span>
                     </div>
                   ))}

@@ -15,10 +15,10 @@ export default async function NewInvoicePage() {
 
   if (!company) redirect('/settings')
 
-  const [{ data: customers }, { data: products }, { count }] = await Promise.all([
+  const [{ data: customers }, { data: products }, { data: existing }] = await Promise.all([
     supabase.from('customers').select('id, name, email').eq('company_id', company.id).order('name'),
     supabase.from('products').select('*').eq('company_id', company.id).order('name'),
-    supabase.from('invoices').select('*', { count: 'exact', head: true }).eq('company_id', company.id),
+    supabase.from('invoices').select('number').eq('company_id', company.id),
   ])
 
   return (
@@ -31,7 +31,7 @@ export default async function NewInvoicePage() {
         company={company}
         customers={customers ?? []}
         products={products ?? []}
-        invoiceCount={(count ?? 0) + 1}
+        existingNumbers={(existing ?? []).map((i) => i.number)}
       />
     </div>
   )

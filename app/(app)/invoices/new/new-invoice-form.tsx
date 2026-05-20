@@ -7,7 +7,7 @@ import { Input, Textarea } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
-import { formatCurrency, generateInvoiceNumber } from '@/lib/utils'
+import { formatCurrency, nextInvoiceNumber } from '@/lib/utils'
 import toast from 'react-hot-toast'
 import type { Company, Currency } from '@/lib/types'
 
@@ -23,7 +23,7 @@ interface Props {
   company: Company
   customers: { id: string; name: string; email: string }[]
   products: { id: string; name: string; unit_price: number; tax_rate: number }[]
-  invoiceCount: number
+  existingNumbers: string[]
 }
 
 const CURRENCIES = [
@@ -47,7 +47,7 @@ function calcItem(item: Omit<LineItem, 'total'>): LineItem {
   return { ...item, total: sub + tax }
 }
 
-export function NewInvoiceForm({ company, customers, products, invoiceCount }: Props) {
+export function NewInvoiceForm({ company, customers, products, existingNumbers }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [customerId, setCustomerId] = useState('')
@@ -60,7 +60,7 @@ export function NewInvoiceForm({ company, customers, products, invoiceCount }: P
     { name: '', quantity: 1, unit_price: 0, tax_rate: 18, total: 0 },
   ])
 
-  const invoiceNumber = generateInvoiceNumber(company.invoice_prefix, invoiceCount)
+  const invoiceNumber = nextInvoiceNumber(company.invoice_prefix, existingNumbers)
 
   const updateItem = useCallback((idx: number, field: keyof Omit<LineItem, 'total'>, value: string | number) => {
     setItems((prev) => {
@@ -96,12 +96,11 @@ export function NewInvoiceForm({ company, customers, products, invoiceCount }: P
     setLoading(true)
     const supabase = createClient()
 
-    const { data: inv, error } = await supabase
-      .from('invoices')
-      .insert({
+    function buildPayload(number: string) {
+      return {
         company_id: company.id,
         customer_id: customerId,
-        number: invoiceNumber,
+        number,
         type,
         status,
         issue_date: issueDate,
@@ -111,11 +110,20 @@ export function NewInvoiceForm({ company, customers, products, invoiceCount }: P
         tax_total: taxTotal,
         total,
         notes: notes || null,
-      })
-      .select()
-      .single()
+      }
+    }
 
-    if (error) {
+    let number = invoiceNumber
+    let { data: inv, error } = await supabase.from('invoices').insert(buildPayload(number)).select().single()
+
+    // Retry once on a unique-number collision with a freshly computed number.
+    if (error && error.code === '23505') {
+      const { data: existing } = await supabase.from('invoices').select('number').eq('company_id', company.id)
+      number = nextInvoiceNumber(company.invoice_prefix, (existing ?? []).map((i) => i.number))
+      ;({ data: inv, error } = await supabase.from('invoices').insert(buildPayload(number)).select().single())
+    }
+
+    if (error || !inv) {
       toast.error('Failed to create invoice')
       setLoading(false)
       return
@@ -129,7 +137,7 @@ export function NewInvoiceForm({ company, customers, products, invoiceCount }: P
       company_id: company.id,
       invoice_id: inv.id,
       action: 'created',
-      description: `Invoice ${invoiceNumber} created`,
+      description: `Invoice ${number} created`,
     })
 
     toast.success('Invoice created!')
@@ -138,9 +146,9 @@ export function NewInvoiceForm({ company, customers, products, invoiceCount }: P
   }
 
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Main */}
-      <div className="col-span-2 space-y-6">
+      <div className="md:col-span-2 space-y-6">
         {/* Details */}
         <div className="border border-gray-100 rounded-xl p-6 space-y-4">
           <h2 className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Invoice Details</h2>

@@ -31,19 +31,26 @@ export function formatDate(dateStr: string | null | undefined) {
   })
 }
 
-export function formatDateShort(dateStr: string | null | undefined) {
-  if (!dateStr) return '—'
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  })
-}
-
 export function isOverdue(dueDate: string | null | undefined, status: InvoiceStatus) {
   if (!dueDate || status === 'paid' || status === 'cancelled' || status === 'draft') return false
-  return new Date(dueDate) < new Date()
+  const due = new Date(dueDate)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return due < today
+}
+
+/**
+ * Derives the display status of an invoice. A 'pending' invoice whose due date
+ * has passed is shown as 'overdue' without needing a background job to flip it.
+ */
+export function effectiveStatus(invoice: {
+  status: InvoiceStatus
+  due_date?: string | null
+}): InvoiceStatus {
+  if (invoice.status === 'pending' && isOverdue(invoice.due_date, invoice.status)) {
+    return 'overdue'
+  }
+  return invoice.status
 }
 
 export function getGreeting() {
@@ -53,12 +60,18 @@ export function getGreeting() {
   return 'Good evening'
 }
 
-export function generateInvoiceNumber(prefix: string, count: number) {
+/**
+ * Computes the next invoice number for the current year from the highest
+ * existing sequence, avoiding collisions when drafts are deleted or
+ * invoices are created concurrently.
+ */
+export function nextInvoiceNumber(prefix: string, existingNumbers: string[]) {
   const year = new Date().getFullYear()
-  const num = String(count).padStart(4, '0')
-  return `${prefix}-${year}-${num}`
-}
-
-export function statusLabel(status: InvoiceStatus): string {
-  return status.charAt(0).toUpperCase() + status.slice(1)
+  const re = new RegExp(`^${prefix}-${year}-(\\d+)$`)
+  let max = 0
+  for (const n of existingNumbers) {
+    const m = n.match(re)
+    if (m) max = Math.max(max, parseInt(m[1], 10))
+  }
+  return `${prefix}-${year}-${String(max + 1).padStart(4, '0')}`
 }

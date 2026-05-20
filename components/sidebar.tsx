@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   LayoutDashboard,
   FileText,
@@ -128,12 +128,6 @@ function SidebarContent({
 
 export function Sidebar({ company, userEmail }: SidebarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const pathname = usePathname()
-
-  // Close mobile nav on route change
-  useEffect(() => {
-    setMobileOpen(false)
-  }, [pathname])
 
   return (
     <>

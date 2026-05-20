@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { StatusBadge } from '@/components/ui/badge'
-import { formatCurrency, formatDate } from '@/lib/utils'
+import { formatCurrency, formatDate, effectiveStatus } from '@/lib/utils'
 import { InvoiceActions } from './invoice-actions'
 import type { Currency, Invoice } from '@/lib/types'
 
@@ -35,6 +35,7 @@ export default async function InvoiceDetailPage({ params }: Props) {
 
   const inv = invoice as Invoice & { customer: { name: string; email: string; address?: string; city?: string; state?: string; country?: string; tax_id?: string }; items: Invoice['items'] }
   const currency = (inv.currency as Currency) ?? 'INR'
+  const displayStatus = effectiveStatus(inv)
 
   return (
     <div>
@@ -50,7 +51,7 @@ export default async function InvoiceDetailPage({ params }: Props) {
             </p>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold text-gray-900">{inv.number}</h1>
-              <StatusBadge status={inv.status} />
+              <StatusBadge status={displayStatus} />
             </div>
           </div>
         </div>

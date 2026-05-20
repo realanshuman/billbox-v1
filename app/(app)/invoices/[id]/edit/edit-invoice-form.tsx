@@ -130,7 +130,14 @@ export function EditInvoiceForm({ company, invoice, customers, products }: Props
     // Replace all items
     await supabase.from('invoice_items').delete().eq('invoice_id', invoice.id)
     await supabase.from('invoice_items').insert(
-      items.map(({ id: _id, ...item }) => ({ ...item, invoice_id: invoice.id }))
+      items.map((item) => ({
+        invoice_id: invoice.id,
+        name: item.name,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+        tax_rate: item.tax_rate,
+        total: item.total,
+      }))
     )
 
     await supabase.from('history').insert({

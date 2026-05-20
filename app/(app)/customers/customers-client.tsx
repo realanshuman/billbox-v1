@@ -159,18 +159,18 @@ export function CustomersClient({ customers, companyId }: Props) {
       </div>
 
       {customers.length === 0 ? (
-        <div className="border border-gray-100 rounded-xl p-12 text-center">
+        <div className="bg-white border border-gray-100 rounded-xl p-12 text-center shadow-xs">
           <Users className="w-8 h-8 text-gray-200 mx-auto mb-3" />
           <p className="text-sm text-gray-400 mb-3">No customers yet.</p>
           <Button size="sm" onClick={() => setModal({ open: true })}>Add your first customer</Button>
         </div>
       ) : (
-        <div className="border border-gray-100 rounded-xl overflow-hidden overflow-x-auto">
+        <div className="bg-white border border-gray-100 rounded-xl overflow-hidden overflow-x-auto shadow-xs">
           <table>
             <thead>
               <tr className="border-b border-gray-100">
                 {['Name', 'Email', 'Phone', 'Country', 'Added', ''].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400 whitespace-nowrap">{h}</th>
+                  <th key={h} className="px-4 py-3 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400">{h}</th>
                 ))}
               </tr>
             </thead>

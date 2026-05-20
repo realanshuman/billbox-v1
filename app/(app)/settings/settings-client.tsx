@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Crown } from 'lucide-react'
+import { Crown, Check } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
@@ -73,71 +73,72 @@ export function SettingsClient({ company, userId }: Props) {
   const previewNumber = `${form.invoice_prefix}-${new Date().getFullYear()}-0001`
 
   return (
-    <form onSubmit={handleSave} className="space-y-6 max-w-2xl">
+    <form onSubmit={handleSave} className="space-y-5 max-w-2xl">
       {/* Plan */}
-      <div className="border border-gray-200 rounded-xl p-6">
+      <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-xs">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Current Plan</p>
-          <Crown className="w-4 h-4 text-gray-400" />
+          <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400">Current Plan</p>
+          <Crown className="w-3.5 h-3.5 text-gray-400" />
         </div>
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between mb-5">
           <div>
             <h2 className="text-xl font-bold text-gray-900 capitalize">{company?.plan ?? 'Starter'}</h2>
-            <p className="text-sm text-gray-400">{company?.plan === 'pro' ? '$29.99/month' : '$9.00/month'}</p>
+            <p className="text-xs text-gray-400 mt-0.5">{company?.plan === 'pro' ? '$29.99/month' : '$9.00/month'}</p>
           </div>
-          <div className="flex gap-2 text-right text-xs text-gray-400">
-            {company?.plan === 'pro' ? (
-              <>
-                <span>Unlimited invoices/mo</span>
-                <span className="mx-1">·</span>
-                <span>Unlimited customers</span>
-              </>
-            ) : (
-              <>
-                <span>50 invoices/mo</span>
-                <span className="mx-1">·</span>
-                <span>20 customers</span>
-              </>
-            )}
-          </div>
+          <p className="text-xs text-gray-400 text-right leading-relaxed">
+            {company?.plan === 'pro'
+              ? <>Unlimited invoices/mo<br />Unlimited customers</>
+              : <>50 invoices/mo<br />20 customers</>
+            }
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          {/* Starter card */}
-          <div className={`border rounded-lg p-4 ${company?.plan !== 'pro' ? 'border-gray-900' : 'border-gray-200'}`}>
-            <div className="flex items-center justify-between mb-2">
+          {/* Starter */}
+          <div className={`border rounded-lg p-4 ${company?.plan !== 'pro' ? 'border-gray-900 bg-gray-50/50' : 'border-gray-200'}`}>
+            <div className="flex items-baseline justify-between mb-3">
               <span className="font-bold text-sm text-gray-900">Starter</span>
-              <span className="text-sm text-gray-500">$9 / month</span>
+              <span className="text-xs text-gray-500">$9 / mo</span>
             </div>
-            <ul className="space-y-1 text-xs text-gray-500 mb-3">
-              <li>Send invoices by email</li>
-              <li>Payment reminders</li>
-              <li>Recurring invoices</li>
+            <ul className="space-y-1.5 mb-4">
+              {['Send invoices by email', 'Payment reminders', 'Recurring invoices', '50 invoices / month'].map((f) => (
+                <li key={f} className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                  <Check className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                  {f}
+                </li>
+              ))}
             </ul>
             {company?.plan !== 'pro' ? (
-              <div className="w-full py-1.5 text-center text-xs text-gray-400 border border-gray-200 rounded">Current plan</div>
+              <div className="w-full py-1.5 text-center text-[11px] text-gray-400 border border-gray-200 rounded bg-white">
+                Current plan
+              </div>
             ) : (
-              <button type="button" className="w-full py-1.5 text-center text-xs text-gray-700 border border-gray-200 rounded hover:bg-gray-50 transition-colors">
+              <button type="button" className="w-full py-1.5 text-center text-[11px] text-gray-700 border border-gray-200 rounded hover:bg-gray-50 transition-colors">
                 Downgrade
               </button>
             )}
           </div>
 
-          {/* Pro card */}
-          <div className={`border rounded-lg p-4 ${company?.plan === 'pro' ? 'border-gray-900' : 'border-gray-200'}`}>
-            <div className="flex items-center justify-between mb-2">
+          {/* Pro */}
+          <div className={`border rounded-lg p-4 ${company?.plan === 'pro' ? 'border-gray-900 bg-gray-50/50' : 'border-gray-200'}`}>
+            <div className="flex items-baseline justify-between mb-3">
               <span className="font-bold text-sm text-gray-900">Pro</span>
-              <span className="text-sm text-gray-500">$29 / month</span>
+              <span className="text-xs text-gray-500">$29 / mo</span>
             </div>
-            <ul className="space-y-1 text-xs text-gray-500 mb-3">
-              <li>Unlimited automation</li>
-              <li>Credit notes</li>
-              <li>Advanced branding controls</li>
+            <ul className="space-y-1.5 mb-4">
+              {['Unlimited invoices', 'All PDF templates', 'Unlimited automation', 'Credit notes', 'Advanced branding'].map((f) => (
+                <li key={f} className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                  <Check className="w-3 h-3 text-gray-900 flex-shrink-0" />
+                  {f}
+                </li>
+              ))}
             </ul>
             {company?.plan === 'pro' ? (
-              <div className="w-full py-1.5 text-center text-xs text-gray-400 border border-gray-200 rounded">Current plan</div>
+              <div className="w-full py-1.5 text-center text-[11px] text-gray-400 border border-gray-200 rounded bg-white">
+                Current plan
+              </div>
             ) : (
-              <button type="button" className="w-full py-1.5 text-center text-xs font-medium text-white bg-gray-900 rounded hover:bg-gray-800 transition-colors">
+              <button type="button" className="w-full py-1.5 text-center text-[11px] font-semibold text-white bg-gray-900 rounded hover:bg-gray-700 transition-colors">
                 Upgrade to Pro
               </button>
             )}
@@ -146,8 +147,8 @@ export function SettingsClient({ company, userId }: Props) {
       </div>
 
       {/* Company Profile */}
-      <div className="border border-gray-200 rounded-xl p-6 space-y-4">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Company Profile</p>
+      <div className="border border-gray-200 rounded-xl p-6 space-y-4 bg-white shadow-xs">
+        <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400">Company Profile</p>
         <div className="grid grid-cols-2 gap-4">
           <Input label="Company Name *" value={form.name} onChange={update('name')} required placeholder="Acme Inc." />
           <Input label="Business Email" type="email" value={form.email} onChange={update('email')} placeholder="hello@acme.com" />
@@ -165,8 +166,8 @@ export function SettingsClient({ company, userId }: Props) {
       </div>
 
       {/* Invoice Defaults */}
-      <div className="border border-gray-200 rounded-xl p-6 space-y-4">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Invoice Defaults</p>
+      <div className="border border-gray-200 rounded-xl p-6 space-y-4 bg-white shadow-xs">
+        <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400">Invoice Defaults</p>
         <div className="grid grid-cols-2 gap-4">
           <Input
             label="Invoice Prefix"

@@ -116,31 +116,28 @@ export function InvoiceActions({ invoice, company }: Props) {
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      {/* PDF download + template selector */}
+      {/* PDF split button */}
       <div className="relative flex items-center" ref={dropdownRef}>
-        <div className="flex items-center border border-gray-200 rounded overflow-hidden">
-          <Button
-            variant="secondary"
-            size="sm"
-            className="rounded-none border-0 gap-1.5"
+        <div className="flex items-center border border-gray-200 rounded-md overflow-hidden bg-white shadow-xs">
+          <button
             onClick={handleDownloadPDF}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5 text-gray-500" />
             PDF · {templateLabel}
-          </Button>
-          <div className="w-px h-6 bg-gray-200" />
-          <Button
-            variant="secondary"
-            size="sm"
-            className="rounded-none border-0 px-2"
+          </button>
+          <div className="w-px h-5 bg-gray-200" />
+          <button
             onClick={() => setDropdownOpen((o) => !o)}
+            className="px-2 py-1.5 text-gray-500 hover:bg-gray-50 transition-colors"
+            aria-label="Choose template"
           >
-            <ChevronDown className="w-4 h-4" />
-          </Button>
+            <ChevronDown className="w-3.5 h-3.5" />
+          </button>
         </div>
 
         {dropdownOpen && (
-          <div className="absolute top-full right-0 mt-1 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 overflow-hidden">
+          <div className="absolute top-full right-0 mt-1.5 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 overflow-hidden">
             {PDF_TEMPLATES.map((t) => (
               <button
                 key={t.value}
@@ -152,15 +149,15 @@ export function InvoiceActions({ invoice, company }: Props) {
                   setTemplate(t.value)
                   setDropdownOpen(false)
                 }}
-                className={`w-full flex items-center justify-between px-4 py-2 text-sm text-left transition-colors ${
+                className={`w-full flex items-center justify-between px-3.5 py-2 text-xs text-left transition-colors ${
                   template === t.value
-                    ? 'bg-gray-50 font-semibold text-gray-900'
+                    ? 'bg-gray-100 font-semibold text-gray-900'
                     : t.pro && company.plan !== 'pro'
-                    ? 'text-gray-400 cursor-default'
+                    ? 'text-gray-300 cursor-default'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                <span className={t.pro && company.plan !== 'pro' ? 'text-gray-400' : ''}>{t.label}</span>
+                <span>{t.label}</span>
                 {t.pro && <Badge variant="pro" className="text-[9px] px-1.5 py-0.5">PRO</Badge>}
               </button>
             ))}
@@ -169,45 +166,26 @@ export function InvoiceActions({ invoice, company }: Props) {
       </div>
 
       {canSend && (
-        <Button
-          variant="secondary"
-          size="sm"
-          loading={loading === 'send'}
-          onClick={handleSend}
-        >
+        <Button variant="secondary" size="sm" loading={loading === 'send'} onClick={handleSend}>
           <Send className="w-3.5 h-3.5" />
           Send
         </Button>
       )}
 
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={handleRemind}
-      >
+      <Button variant="secondary" size="sm" onClick={handleRemind}>
         <Bell className="w-3.5 h-3.5" />
         Remind
       </Button>
 
       {canMarkPaid && (
-        <Button
-          variant="success"
-          size="sm"
-          loading={loading === 'paid'}
-          onClick={() => updateStatus('paid')}
-        >
+        <Button variant="success" size="sm" loading={loading === 'paid'} onClick={() => updateStatus('paid')}>
           <CheckCircle className="w-3.5 h-3.5" />
           Mark Paid
         </Button>
       )}
 
       {canCancel && (
-        <Button
-          variant="danger"
-          size="sm"
-          loading={loading === 'cancelled'}
-          onClick={() => updateStatus('cancelled')}
-        >
+        <Button variant="danger" size="sm" loading={loading === 'cancelled'} onClick={() => updateStatus('cancelled')}>
           <XCircle className="w-3.5 h-3.5" />
           Cancel
         </Button>

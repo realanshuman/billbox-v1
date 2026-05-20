@@ -150,8 +150,8 @@ export function NewInvoiceForm({ company, customers, products, existingNumbers }
       {/* Main */}
       <div className="md:col-span-2 space-y-6">
         {/* Details */}
-        <div className="border border-gray-100 rounded-xl p-6 space-y-4">
-          <h2 className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Invoice Details</h2>
+        <div className="border border-gray-200 rounded-xl p-5 space-y-4 bg-white shadow-xs">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Invoice Details</p>
           <div className="grid grid-cols-2 gap-4">
             <Input label="Invoice Number" value={invoiceNumber} readOnly className="bg-gray-50" />
             <Select
@@ -192,12 +192,12 @@ export function NewInvoiceForm({ company, customers, products, existingNumbers }
         </div>
 
         {/* Line Items */}
-        <div className="border border-gray-100 rounded-xl overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-            <h2 className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Line Items</h2>
+        <div className="border border-gray-100 rounded-xl overflow-hidden bg-white">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
+            <h2 className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Line Items</h2>
             {products.length > 0 && (
               <select
-                className="text-xs border border-gray-200 rounded px-2 py-1 text-gray-600"
+                className="text-[11px] border border-gray-200 rounded-md px-2.5 py-1 text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
                 onChange={(e) => { if (e.target.value) { addProduct(e.target.value); e.target.value = '' } }}
                 defaultValue=""
               >
@@ -211,65 +211,65 @@ export function NewInvoiceForm({ company, customers, products, existingNumbers }
 
           <table>
             <thead>
-              <tr className="border-b border-gray-50">
-                <th className="px-4 py-2 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400 w-2/5">Item</th>
-                <th className="px-4 py-2 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400 w-16">Qty</th>
-                <th className="px-4 py-2 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400">Unit Price</th>
-                <th className="px-4 py-2 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400 w-24">Tax</th>
-                <th className="px-4 py-2 text-right text-[10px] font-semibold uppercase tracking-widest text-gray-400">Total</th>
-                <th className="w-8" />
+              <tr className="border-b border-gray-100">
+                <th className="px-5 py-2.5 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400 w-2/5">Item</th>
+                <th className="px-5 py-2.5 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400 w-16">Qty</th>
+                <th className="px-5 py-2.5 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400">Unit Price</th>
+                <th className="px-5 py-2.5 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400 w-24">Tax</th>
+                <th className="px-5 py-2.5 text-right text-[9px] font-semibold uppercase tracking-widest text-gray-400">Total</th>
+                <th className="w-9" />
               </tr>
             </thead>
             <tbody>
               {items.map((item, idx) => (
-                <tr key={idx} className="border-b border-gray-50 last:border-0">
-                  <td className="px-4 py-2">
+                <tr key={idx} className="border-b border-gray-50 last:border-0 group hover:bg-gray-50/60 transition-colors">
+                  <td className="px-5 py-2.5">
                     <input
                       value={item.name}
                       onChange={(e) => updateItem(idx, 'name', e.target.value)}
                       placeholder="Item name"
-                      className="w-full text-sm border-0 focus:outline-none focus:bg-gray-50 px-1 py-0.5 rounded"
+                      className="w-full text-sm bg-transparent border-0 focus:outline-none placeholder:text-gray-300"
                     />
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-5 py-2.5">
                     <input
                       type="number"
                       min="0.01"
                       step="0.01"
                       value={item.quantity}
                       onChange={(e) => updateItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                      className="w-full text-sm border-0 focus:outline-none focus:bg-gray-50 px-1 py-0.5 rounded text-center"
+                      className="w-full text-sm bg-transparent border-0 focus:outline-none text-center"
                     />
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-5 py-2.5">
                     <input
                       type="number"
                       min="0"
                       step="0.01"
                       value={item.unit_price}
                       onChange={(e) => updateItem(idx, 'unit_price', parseFloat(e.target.value) || 0)}
-                      className="w-full text-sm border-0 focus:outline-none focus:bg-gray-50 px-1 py-0.5 rounded"
+                      className="w-full text-sm bg-transparent border-0 focus:outline-none"
                     />
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-5 py-2.5">
                     <select
                       value={item.tax_rate}
                       onChange={(e) => updateItem(idx, 'tax_rate', parseFloat(e.target.value))}
-                      className="w-full text-sm border-0 focus:outline-none focus:bg-gray-50 px-1 py-0.5 rounded"
+                      className="w-full text-sm bg-transparent border-0 focus:outline-none appearance-none cursor-pointer"
                     >
                       {TAX_RATES.map((r) => (
                         <option key={r.value} value={r.value}>{r.label}</option>
                       ))}
                     </select>
                   </td>
-                  <td className="px-4 py-2 text-right text-sm font-medium text-gray-900">
+                  <td className="px-5 py-2.5 text-right text-sm font-medium text-gray-900 tabular-nums">
                     {formatCurrency(item.total, currency)}
                   </td>
-                  <td className="px-2">
+                  <td className="pr-3">
                     {items.length > 1 && (
                       <button
                         onClick={() => removeItem(idx)}
-                        className="text-gray-300 hover:text-red-500 transition-colors p-1"
+                        className="p-1 text-gray-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -280,7 +280,7 @@ export function NewInvoiceForm({ company, customers, products, existingNumbers }
             </tbody>
           </table>
 
-          <div className="px-6 py-3 border-t border-gray-50">
+          <div className="px-5 py-3 border-t border-gray-50">
             <button
               onClick={addItem}
               className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors"
@@ -292,7 +292,7 @@ export function NewInvoiceForm({ company, customers, products, existingNumbers }
         </div>
 
         {/* Notes */}
-        <div className="border border-gray-100 rounded-xl p-6">
+        <div className="border border-gray-200 rounded-xl p-5 bg-white shadow-xs">
           <Textarea
             label="Notes (optional)"
             placeholder="Payment terms, bank details, or any other notes..."
@@ -305,40 +305,31 @@ export function NewInvoiceForm({ company, customers, products, existingNumbers }
 
       {/* Summary sidebar */}
       <div className="space-y-4">
-        <div className="border border-gray-100 rounded-xl p-5 sticky top-8">
-          <h2 className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-4">Summary</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm text-gray-500">
+        <div className="border border-gray-200 rounded-xl p-5 sticky top-8 bg-white shadow-xs">
+          <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-4">Summary</p>
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs text-gray-500">
               <span>Subtotal</span>
-              <span>{formatCurrency(subtotal, currency)}</span>
+              <span className="tabular-nums">{formatCurrency(subtotal, currency)}</span>
             </div>
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-xs text-gray-500">
               <span>Tax</span>
-              <span>{formatCurrency(taxTotal, currency)}</span>
+              <span className="tabular-nums">{formatCurrency(taxTotal, currency)}</span>
             </div>
-            <div className="flex justify-between text-base font-bold text-gray-900 pt-3 border-t border-gray-100 mt-2">
+            <div className="flex justify-between text-sm font-bold text-gray-900 pt-2.5 border-t border-gray-100 mt-1">
               <span>Total</span>
-              <span>{formatCurrency(total, currency)}</span>
+              <span className="tabular-nums">{formatCurrency(total, currency)}</span>
             </div>
           </div>
 
-          <div className="space-y-2 mt-6">
-            <Button
-              className="w-full"
-              loading={loading}
-              onClick={() => handleSubmit('pending')}
-            >
+          <div className="space-y-2 mt-5">
+            <Button className="w-full justify-center" loading={loading} onClick={() => handleSubmit('pending')}>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
               Create & Send
             </Button>
-            <Button
-              variant="secondary"
-              className="w-full"
-              loading={loading}
-              onClick={() => handleSubmit('draft')}
-            >
+            <Button variant="secondary" className="w-full justify-center" loading={loading} onClick={() => handleSubmit('draft')}>
               Save as Draft
             </Button>
           </div>

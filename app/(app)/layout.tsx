@@ -15,11 +15,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     .single()
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#f7f8fa]">
       <Sidebar company={company} userEmail={user.email ?? ''} />
       {/* pt-12 on mobile for top bar, md:ml-44 for desktop sidebar */}
       <main className="pt-12 md:pt-0 md:ml-44 min-h-screen">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 md:py-8">
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 md:py-10">
           {children}
         </div>
       </main>

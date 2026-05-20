@@ -124,7 +124,7 @@ export default async function DashboardPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {stats.map(({ label, value, sub, icon: Icon }) => (
-          <div key={label} className="border border-gray-100 rounded-xl p-4 hover:border-gray-200 transition-colors">
+          <div key={label} className="bg-white border border-gray-100 rounded-xl p-4 shadow-xs hover:border-gray-200 transition-colors">
             <div className="flex items-start justify-between mb-3">
               <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 leading-tight">{label}</p>
               <div className="w-6 h-6 bg-gray-900 rounded flex items-center justify-center flex-shrink-0">
@@ -140,8 +140,8 @@ export default async function DashboardPage() {
       {/* This month + Aging */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
         {/* This month */}
-        <div className="border border-gray-100 rounded-xl p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-3">This Month</p>
+        <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-xs">
+          <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-3">This Month</p>
           <div className="flex items-end gap-3 mb-1">
             <p className="text-2xl font-bold text-gray-900">{formatCurrency(thisMonthRevenue, currency)}</p>
             {revenueDelta !== null && (
@@ -156,8 +156,8 @@ export default async function DashboardPage() {
         </div>
 
         {/* Aging */}
-        <div className="border border-gray-100 rounded-xl p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-3">Outstanding by Age</p>
+        <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-xs">
+          <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-3">Outstanding by Age</p>
           {hasOutstanding ? (
             <div className="space-y-2">
               {agingRows.map((row) => (
@@ -196,12 +196,12 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          <div className="border border-gray-100 rounded-xl overflow-hidden overflow-x-auto">
+          <div className="bg-white border border-gray-100 rounded-xl overflow-hidden overflow-x-auto shadow-xs">
             <table>
               <thead>
                 <tr className="border-b border-gray-100">
                   {['Invoice', 'Customer', 'Date', 'Due', 'Amount', 'Status'].map((h) => (
-                    <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400 whitespace-nowrap">
+                    <th key={h} className="px-4 py-3 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400">
                       {h}
                     </th>
                   ))}
@@ -234,7 +234,7 @@ export default async function DashboardPage() {
       {topCustomers.length > 0 && (
         <div className="mb-10">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-4">Top Customers</p>
-          <div className="border border-gray-100 rounded-xl divide-y divide-gray-50 overflow-hidden">
+          <div className="bg-white border border-gray-100 rounded-xl divide-y divide-gray-50 overflow-hidden shadow-xs">
             {topCustomers.map(([name, total], i) => (
               <div key={name} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
                 <div className="flex items-center gap-3">
@@ -263,7 +263,7 @@ export default async function DashboardPage() {
             <Link
               key={href}
               href={href}
-              className="group border border-gray-100 rounded-xl p-5 hover:border-gray-300 hover:shadow-sm transition-all"
+              className="group bg-white border border-gray-100 rounded-xl p-5 shadow-xs hover:border-gray-300 hover:shadow-sm transition-all"
             >
               <p className="text-sm font-semibold text-gray-900 mb-0.5 group-hover:text-gray-700">{title}</p>
               <p className="text-xs text-gray-400">{sub}</p>

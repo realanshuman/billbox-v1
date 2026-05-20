@@ -101,12 +101,12 @@ export default async function CustomerDetailPage({ params }: Props) {
           <p className="text-sm text-gray-400">No invoices for this customer yet.</p>
         </div>
       ) : (
-        <div className="border border-gray-100 rounded-xl overflow-hidden overflow-x-auto">
+        <div className="bg-white border border-gray-100 rounded-xl overflow-hidden overflow-x-auto shadow-xs">
           <table>
             <thead>
               <tr className="border-b border-gray-100">
                 {['#', 'Date', 'Due', 'Amount', 'Status'].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400 whitespace-nowrap">{h}</th>
+                  <th key={h} className="px-4 py-3 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400">{h}</th>
                 ))}
               </tr>
             </thead>

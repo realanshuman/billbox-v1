@@ -69,7 +69,7 @@ export default async function InvoiceDetailPage({ params }: Props) {
       </div>
 
       {/* Invoice body */}
-      <div id="invoice-content" className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+      <div id="invoice-content" className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
         {/* From / Bill To */}
         <div className="grid grid-cols-2 border-b border-gray-100 bg-gray-50/60">
           <div className="p-6">
@@ -108,7 +108,7 @@ export default async function InvoiceDetailPage({ params }: Props) {
           <thead>
             <tr className="border-b border-gray-100">
               {['Item', 'Qty', 'Unit Price', 'Tax', 'Total'].map((h) => (
-                <th key={h} className={`px-5 py-3 text-[10px] font-semibold uppercase tracking-widest text-gray-400 ${h === 'Total' ? 'text-right' : 'text-left'}`}>
+                <th key={h} className={`px-5 py-3 text-[9px] font-semibold uppercase tracking-widest text-gray-400 ${h === 'Total' ? 'text-right' : 'text-left'}`}>
                   {h}
                 </th>
               ))}
@@ -118,10 +118,10 @@ export default async function InvoiceDetailPage({ params }: Props) {
             {(inv.items ?? []).map((item, idx) => (
               <tr key={item.id ?? idx} className="border-b border-gray-50 last:border-0">
                 <td className="px-5 py-4 text-sm font-medium text-gray-900">{item.name}</td>
-                <td className="px-5 py-4 text-sm text-gray-600">{item.quantity}</td>
-                <td className="px-5 py-4 text-sm text-gray-600">{formatCurrency(item.unit_price, currency)}</td>
-                <td className="px-5 py-4 text-sm text-gray-600">{item.tax_rate}%</td>
-                <td className="px-5 py-4 text-sm font-semibold text-gray-900 text-right">{formatCurrency(item.total, currency)}</td>
+                <td className="px-5 py-4 text-sm text-gray-500 tabular-nums">{item.quantity}</td>
+                <td className="px-5 py-4 text-sm text-gray-500 tabular-nums">{formatCurrency(item.unit_price, currency)}</td>
+                <td className="px-5 py-4 text-sm text-gray-500">{item.tax_rate}%</td>
+                <td className="px-5 py-4 text-sm font-semibold text-gray-900 text-right tabular-nums">{formatCurrency(item.total, currency)}</td>
               </tr>
             ))}
           </tbody>

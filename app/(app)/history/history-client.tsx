@@ -162,9 +162,9 @@ export function HistoryAnalyticsClient({ invoices: raw, currency }: Props) {
           { label: 'Overdue',       value: formatCurrency(overdueTotal, currency), sub: `(${overdue.length})` },
           { label: 'Draft',         value: `${draft.length} invoice${draft.length !== 1 ? 's' : ''}`, sub: null },
         ].map(({ label, value, sub }) => (
-          <div key={label} className="border border-gray-100 rounded-xl p-4">
+          <div key={label} className="bg-white border border-gray-100 rounded-xl p-4 shadow-xs">
             <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-2">{label}</p>
-            <p className="text-base font-bold text-gray-900 leading-tight">
+            <p className="text-base font-bold text-gray-900 leading-tight tabular-nums">
               {value}
               {sub && <span className="text-sm font-normal text-gray-400 ml-1">{sub}</span>}
             </p>
@@ -175,7 +175,7 @@ export function HistoryAnalyticsClient({ invoices: raw, currency }: Props) {
       {/* Monthly revenue + Top customers */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {/* Monthly revenue bar chart */}
-        <div className="border border-gray-100 rounded-xl p-5">
+        <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-xs">
           <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-4">Monthly Revenue (Paid)</p>
           {monthlyRevenue.length === 0 ? (
             <p className="text-sm text-gray-400 py-6 text-center">No paid invoices in range.</p>
@@ -200,7 +200,7 @@ export function HistoryAnalyticsClient({ invoices: raw, currency }: Props) {
         </div>
 
         {/* Top customers */}
-        <div className="border border-gray-100 rounded-xl p-5">
+        <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-xs">
           <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-4">Top Customers by Revenue</p>
           {topCustomers.length === 0 ? (
             <p className="text-sm text-gray-400 py-6 text-center">No paid invoices in range.</p>
@@ -224,7 +224,7 @@ export function HistoryAnalyticsClient({ invoices: raw, currency }: Props) {
       </div>
 
       {/* Invoice Records table */}
-      <div className="border border-gray-100 rounded-xl overflow-hidden">
+      <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 border-b border-gray-100">
           <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400">Invoice Records</p>
           <div className="flex items-center gap-2">
@@ -262,7 +262,7 @@ export function HistoryAnalyticsClient({ invoices: raw, currency }: Props) {
                   {['Invoice', 'Customer', 'Status', 'Issue Date', 'Due Date', 'Total'].map((h) => (
                     <th
                       key={h}
-                      className={`px-5 py-3 text-[9px] font-semibold uppercase tracking-widest text-gray-400 whitespace-nowrap ${h === 'Total' ? 'text-right' : 'text-left'}`}
+                      className={`px-5 py-3 text-[9px] font-semibold uppercase tracking-widest text-gray-400 ${h === 'Total' ? 'text-right' : 'text-left'}`}
                     >
                       {h}
                     </th>

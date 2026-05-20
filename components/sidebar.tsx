@@ -50,18 +50,13 @@ function SidebarContent({
 
   return (
     <div className="flex flex-col h-full">
-      {/* Logo */}
+      {/* Logo + company */}
       <div className="px-4 pt-5 pb-4">
-        <Link href="/dashboard" className="flex items-center gap-2 group" onClick={onNavigate}>
-          <span className="w-5 h-5 bg-gray-900 rounded-sm flex-shrink-0 group-hover:bg-gray-700 transition-colors" />
+        <Link href="/dashboard" className="flex items-center gap-2 group mb-3" onClick={onNavigate}>
+          <span className="w-4 h-4 bg-gray-900 rounded-sm flex-shrink-0 group-hover:bg-gray-700 transition-colors" />
           <span className="text-sm font-bold tracking-tight text-gray-900">billbox</span>
         </Link>
-      </div>
-
-      {/* Company */}
-      <div className="px-4 pb-3">
-        <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-0.5">Workspace</p>
-        <p className="text-xs font-medium text-gray-700 truncate">{company?.name || 'My Company'}</p>
+        <p className="text-xs font-medium text-gray-600 truncate">{company?.name || 'My Company'}</p>
       </div>
 
       {/* New Invoice */}
@@ -69,7 +64,7 @@ function SidebarContent({
         <Link
           href="/invoices/new"
           onClick={onNavigate}
-          className="flex items-center justify-center gap-1.5 w-full bg-gray-900 text-white px-3 py-2 rounded text-xs font-medium hover:bg-gray-700 transition-colors"
+          className="flex items-center justify-center gap-1.5 w-full bg-gray-900 text-white px-3 py-2 rounded-md text-xs font-semibold tracking-wide hover:bg-gray-700 transition-colors"
         >
           <Plus className="w-3.5 h-3.5" />
           New Invoice

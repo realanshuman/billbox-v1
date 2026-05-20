@@ -198,7 +198,7 @@ export function InvoicesTable({ invoices, prefix, allNumbers }: Props) {
 
   if (invoices.length === 0) {
     return (
-      <div className="border border-gray-100 rounded-xl p-12 text-center">
+      <div className="bg-white border border-gray-100 rounded-xl p-12 text-center shadow-xs">
         <p className="text-sm text-gray-400">No invoices found.</p>
       </div>
     )
@@ -214,12 +214,12 @@ export function InvoicesTable({ invoices, prefix, allNumbers }: Props) {
           <Download className="w-3.5 h-3.5" /> Export CSV
         </button>
       </div>
-      <div className="border border-gray-100 rounded-xl overflow-hidden overflow-x-auto">
+      <div className="bg-white border border-gray-100 rounded-xl overflow-hidden overflow-x-auto shadow-xs">
         <table>
           <thead>
             <tr className="border-b border-gray-100">
               {['#', 'Customer', 'Type', 'Date', 'Due', 'Amount', 'Status', ''].map((h) => (
-                <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400 whitespace-nowrap">
+                <th key={h} className="px-4 py-3 text-left text-[9px] font-semibold uppercase tracking-widest text-gray-400">
                   {h}
                 </th>
               ))}

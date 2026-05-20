@@ -12,6 +12,7 @@ const actionLabels: Record<string, { label: string; color: string }> = {
   marked_cancelled: { label: 'Marked as cancelled', color: 'text-gray-400' },
   marked_overdue: { label: 'Marked as overdue', color: 'text-red-600' },
   reminded: { label: 'Reminder sent', color: 'text-purple-600' },
+  edited: { label: 'Invoice edited', color: 'text-gray-600' },
 }
 
 function formatTs(ts: string) {

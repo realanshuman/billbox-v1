@@ -17,8 +17,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen bg-white">
       <Sidebar company={company} userEmail={user.email ?? ''} />
-      <main className="ml-44 min-h-screen">
-        <div className="max-w-5xl mx-auto px-8 py-8">
+      {/* pt-12 on mobile for top bar, md:ml-44 for desktop sidebar */}
+      <main className="pt-12 md:pt-0 md:ml-44 min-h-screen">
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 md:py-8">
           {children}
         </div>
       </main>

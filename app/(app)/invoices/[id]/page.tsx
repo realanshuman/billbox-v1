@@ -33,13 +33,13 @@ export default async function InvoiceDetailPage({ params }: Props) {
 
   if (!invoice) notFound()
 
-  const inv = invoice as Invoice & { customer: { name: string; email: string; address?: string; city?: string }; items: Invoice['items'] }
+  const inv = invoice as Invoice & { customer: { name: string; email: string; address?: string; city?: string; state?: string; country?: string; tax_id?: string }; items: Invoice['items'] }
   const currency = (inv.currency as Currency) ?? 'INR'
 
   return (
     <div>
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
         <div className="flex items-center gap-3">
           <Link href="/invoices" className="text-gray-400 hover:text-gray-700 transition-colors text-sm">
             ← Back
@@ -54,7 +54,17 @@ export default async function InvoiceDetailPage({ params }: Props) {
             </div>
           </div>
         </div>
-        <InvoiceActions invoice={inv} />
+        <div className="flex items-center gap-2 flex-wrap">
+          {inv.status === 'draft' && (
+            <Link
+              href={`/invoices/${inv.id}/edit`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-200 rounded bg-white hover:bg-gray-50 transition-colors"
+            >
+              Edit
+            </Link>
+          )}
+          <InvoiceActions invoice={inv} company={company} />
+        </div>
       </div>
 
       {/* Invoice body */}

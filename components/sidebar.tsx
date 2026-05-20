@@ -24,7 +24,7 @@ const navItems = [
   { href: '/invoices', label: 'Invoices', icon: FileText },
   { href: '/customers', label: 'Customers', icon: Users },
   { href: '/products', label: 'Products', icon: Package },
-  { href: '/history', label: 'History', icon: History },
+  { href: '/history', label: 'Analytics', icon: History },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
 

@@ -23,9 +23,12 @@ export default async function NewInvoicePage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">New Invoice</h1>
-        <p className="text-sm text-gray-400 mt-0.5">Create a tax or proforma invoice</p>
+      <div className="flex items-center gap-4 mb-6">
+        <a href="/invoices" className="text-gray-400 hover:text-gray-700 transition-colors text-sm">←</a>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">New Invoice</h1>
+          <p className="text-sm text-gray-400 mt-0.5">Create a tax or proforma invoice</p>
+        </div>
       </div>
       <NewInvoiceForm
         company={company}

@@ -42,34 +42,34 @@ export default function LandingPage() {
       <section className="pt-36 pb-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 border border-gray-200 rounded-full px-3 py-1 text-xs text-gray-500 mb-8">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
             Built for digital sellers
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-[1.05] mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-[1.0] mb-6">
             Invoice smarter.
             <br />
-            <span className="text-gray-400">Get paid faster.</span>
+            <span className="text-gray-300">Get paid faster.</span>
           </h1>
-          <p className="text-lg text-gray-500 max-w-xl mx-auto mb-10 leading-relaxed">
-            The simplest way to create professional invoices, send them to clients,
-            and track every payment — all in one place.
+          <p className="text-base text-gray-500 max-w-md mx-auto mb-10 leading-relaxed">
+            The fastest way to create professional invoices, send them to clients,
+            and track every payment — in one place.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/signup"
-              className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-medium rounded hover:bg-gray-800 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-medium rounded hover:bg-gray-700 transition-colors"
             >
               Start for free
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/login"
-              className="px-6 py-3 border border-gray-200 text-gray-700 font-medium rounded hover:bg-gray-50 transition-colors"
+              className="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded hover:bg-gray-50 hover:border-gray-300 transition-colors"
             >
               Sign in
             </Link>
           </div>
-          <p className="mt-4 text-xs text-gray-400">No credit card required. Free plan available.</p>
+          <p className="mt-5 text-xs text-gray-400">No credit card required · Free plan available</p>
         </div>
       </section>
 

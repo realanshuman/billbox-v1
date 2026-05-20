@@ -4,15 +4,15 @@ import Link from 'next/link'
 import { History } from 'lucide-react'
 import type { HistoryEntry } from '@/lib/types'
 
-const actionLabels: Record<string, { label: string; color: string }> = {
-  created: { label: 'Invoice created', color: 'text-gray-500' },
-  sent: { label: 'Invoice sent', color: 'text-blue-600' },
-  marked_paid: { label: 'Marked as paid', color: 'text-green-700' },
-  marked_pending: { label: 'Marked as pending', color: 'text-amber-600' },
-  marked_cancelled: { label: 'Marked as cancelled', color: 'text-gray-400' },
-  marked_overdue: { label: 'Marked as overdue', color: 'text-red-600' },
-  reminded: { label: 'Reminder sent', color: 'text-purple-600' },
-  edited: { label: 'Invoice edited', color: 'text-gray-600' },
+const actionMeta: Record<string, { label: string; color: string; dot: string }> = {
+  created:         { label: 'Invoice created',    color: 'text-gray-700',   dot: 'bg-gray-400' },
+  sent:            { label: 'Invoice sent',        color: 'text-blue-600',   dot: 'bg-blue-400' },
+  marked_paid:     { label: 'Marked as paid',      color: 'text-green-700',  dot: 'bg-green-500' },
+  marked_pending:  { label: 'Marked as pending',   color: 'text-amber-600',  dot: 'bg-amber-400' },
+  marked_cancelled:{ label: 'Marked as cancelled', color: 'text-gray-400',   dot: 'bg-gray-300' },
+  marked_overdue:  { label: 'Marked as overdue',   color: 'text-red-600',    dot: 'bg-red-400' },
+  reminded:        { label: 'Reminder sent',       color: 'text-purple-600', dot: 'bg-purple-400' },
+  edited:          { label: 'Invoice edited',      color: 'text-gray-600',   dot: 'bg-gray-400' },
 }
 
 function formatTs(ts: string) {
@@ -22,6 +22,15 @@ function formatTs(ts: string) {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+  })
+}
+
+function formatDay(ts: string) {
+  return new Date(ts).toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
   })
 }
 
@@ -47,6 +56,14 @@ export default async function HistoryPage() {
 
   const history = (entries ?? []) as HistoryEntry[]
 
+  // Group by calendar day
+  const grouped = new Map<string, HistoryEntry[]>()
+  for (const entry of history) {
+    const day = entry.created_at.split('T')[0]
+    if (!grouped.has(day)) grouped.set(day, [])
+    grouped.get(day)!.push(entry)
+  }
+
   return (
     <div>
       <div className="mb-6">
@@ -60,44 +77,51 @@ export default async function HistoryPage() {
           <p className="text-sm text-gray-400">No activity yet.</p>
         </div>
       ) : (
-        <div className="border border-gray-100 rounded-xl overflow-hidden">
-          <table>
-            <thead>
-              <tr className="border-b border-gray-100">
-                {['Action', 'Invoice', 'Description', 'Date'].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-widest text-gray-400">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {history.map((entry) => {
-                const meta = actionLabels[entry.action] ?? { label: entry.action, color: 'text-gray-500' }
-                return (
-                  <tr key={entry.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3">
-                      <span className={`text-sm font-medium ${meta.color}`}>{meta.label}</span>
-                    </td>
-                    <td className="px-4 py-3">
-                      {entry.invoice ? (
-                        <Link
-                          href={`/invoices/${entry.invoice.id}`}
-                          className="text-sm text-gray-700 hover:underline font-medium"
-                        >
-                          {entry.invoice.number}
-                        </Link>
-                      ) : (
-                        <span className="text-sm text-gray-400">—</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-500">{entry.description}</td>
-                    <td className="px-4 py-3 text-sm text-gray-400">{formatTs(entry.created_at)}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+        <div className="space-y-8">
+          {[...grouped.entries()].map(([day, dayEntries]) => (
+            <div key={day}>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-3 pl-1">
+                {formatDay(day + 'T00:00:00')}
+              </p>
+              <div className="border border-gray-100 rounded-xl px-5 py-4">
+                {dayEntries.map((entry, idx) => {
+                  const meta = actionMeta[entry.action] ?? { label: entry.action, color: 'text-gray-500', dot: 'bg-gray-300' }
+                  const isLast = idx === dayEntries.length - 1
+                  return (
+                    <div key={entry.id} className="flex gap-3.5">
+                      {/* Timeline column */}
+                      <div className="flex flex-col items-center pt-1 flex-shrink-0">
+                        <span className={`w-2 h-2 rounded-full ${meta.dot}`} />
+                        {!isLast && <span className="w-px flex-1 bg-gray-100 mt-1.5 mb-0.5 min-h-[16px]" />}
+                      </div>
+                      {/* Content */}
+                      <div className={`flex-1 min-w-0 ${!isLast ? 'pb-4' : ''}`}>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <span className={`text-sm font-medium ${meta.color}`}>{meta.label}</span>
+                            {entry.invoice && (
+                              <Link
+                                href={`/invoices/${entry.invoice.id}`}
+                                className="ml-2 text-[11px] text-gray-400 hover:text-gray-700 hover:underline transition-colors"
+                              >
+                                {entry.invoice.number}
+                              </Link>
+                            )}
+                            {entry.description && (
+                              <p className="text-xs text-gray-400 mt-0.5 truncate">{entry.description}</p>
+                            )}
+                          </div>
+                          <span className="text-[11px] text-gray-400 whitespace-nowrap mt-0.5 flex-shrink-0">
+                            {new Date(entry.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

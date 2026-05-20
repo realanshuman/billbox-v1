@@ -41,15 +41,15 @@ export default async function InvoiceDetailPage({ params }: Props) {
     <div>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3">
-          <Link href="/invoices" className="text-gray-400 hover:text-gray-700 transition-colors text-sm">
-            ← Back
+        <div className="flex items-start gap-4">
+          <Link href="/invoices" className="text-gray-400 hover:text-gray-700 transition-colors text-sm mt-0.5">
+            ←
           </Link>
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-0.5">
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
               {inv.type === 'tax' ? 'Tax Invoice' : 'Proforma Invoice'}
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <h1 className="text-xl font-bold text-gray-900">{inv.number}</h1>
               <StatusBadge status={displayStatus} />
             </div>
@@ -69,18 +69,18 @@ export default async function InvoiceDetailPage({ params }: Props) {
       </div>
 
       {/* Invoice body */}
-      <div id="invoice-content" className="border border-gray-200 rounded-xl overflow-hidden">
+      <div id="invoice-content" className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
         {/* From / Bill To */}
-        <div className="grid grid-cols-2 border-b border-gray-100">
+        <div className="grid grid-cols-2 border-b border-gray-100 bg-gray-50/60">
           <div className="p-6">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">From</p>
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-2">From</p>
             <p className="text-sm font-semibold text-gray-900">{company.name}</p>
             <p className="text-sm text-gray-500">{company.email}</p>
             {company.address && <p className="text-sm text-gray-500">{company.address}</p>}
             {company.tax_id && <p className="text-sm text-gray-500">GST: {company.tax_id}</p>}
           </div>
           <div className="p-6 border-l border-gray-100">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">Bill To</p>
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-2">Bill To</p>
             <p className="text-sm font-semibold text-gray-900">{inv.customer?.name}</p>
             <p className="text-sm text-gray-500">{inv.customer?.email}</p>
             {inv.customer?.address && <p className="text-sm text-gray-500">{inv.customer.address}</p>}
@@ -88,17 +88,17 @@ export default async function InvoiceDetailPage({ params }: Props) {
         </div>
 
         {/* Dates */}
-        <div className="grid grid-cols-3 border-b border-gray-100">
+        <div className="grid grid-cols-3 border-b border-gray-100 bg-gray-50/30">
           <div className="p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">Issue Date</p>
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-1">Issue Date</p>
             <p className="text-sm font-semibold text-gray-900">{formatDate(inv.issue_date)}</p>
           </div>
           <div className="p-5 border-l border-gray-100">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">Due Date</p>
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-1">Due Date</p>
             <p className="text-sm font-semibold text-gray-900">{formatDate(inv.due_date)}</p>
           </div>
           <div className="p-5 border-l border-gray-100">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">Currency</p>
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-1">Currency</p>
             <p className="text-sm font-semibold text-gray-900">{currency}</p>
           </div>
         </div>

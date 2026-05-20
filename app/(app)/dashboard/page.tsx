@@ -122,15 +122,17 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {stats.map(({ label, value, sub, icon: Icon }) => (
-          <div key={label} className="border border-gray-100 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">{label}</p>
-              <Icon className="w-3.5 h-3.5 text-gray-300" />
+          <div key={label} className="border border-gray-100 rounded-xl p-4 hover:border-gray-200 transition-colors">
+            <div className="flex items-start justify-between mb-3">
+              <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 leading-tight">{label}</p>
+              <div className="w-6 h-6 bg-gray-900 rounded flex items-center justify-center flex-shrink-0">
+                <Icon className="w-3 h-3 text-white" />
+              </div>
             </div>
-            <p className="text-2xl font-bold text-gray-900 mb-0.5">{value}</p>
-            <p className="text-xs text-gray-400">{sub}</p>
+            <p className="text-2xl font-bold text-gray-900 mb-0.5 leading-none">{value}</p>
+            <p className="text-[11px] text-gray-400 mt-1">{sub}</p>
           </div>
         ))}
       </div>
@@ -232,14 +234,17 @@ export default async function DashboardPage() {
       {topCustomers.length > 0 && (
         <div className="mb-10">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-4">Top Customers</p>
-          <div className="border border-gray-100 rounded-xl divide-y divide-gray-50">
+          <div className="border border-gray-100 rounded-xl divide-y divide-gray-50 overflow-hidden">
             {topCustomers.map(([name, total], i) => (
-              <div key={name} className="flex items-center justify-between px-4 py-3">
+              <div key={name} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] font-semibold text-gray-300 w-4">{i + 1}</span>
+                  <span className={`text-[10px] font-bold w-4 text-center ${i === 0 ? 'text-gray-900' : i === 1 ? 'text-gray-500' : 'text-gray-300'}`}>{i + 1}</span>
+                  <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-[9px] font-bold text-gray-600 uppercase flex-shrink-0">
+                    {name.charAt(0)}
+                  </div>
                   <span className="text-sm text-gray-700">{name}</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">{formatCurrency(total, currency)}</span>
+                <span className="text-sm font-semibold text-gray-900">{formatCurrency(total, currency)}</span>
               </div>
             ))}
           </div>
@@ -249,18 +254,18 @@ export default async function DashboardPage() {
       {/* Quick Actions */}
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-4">Quick Actions</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
-            { href: '/invoices/new', title: 'Create Invoice', sub: 'New tax or proforma' },
+            { href: '/invoices/new', title: 'New Invoice', sub: 'Create tax or proforma' },
             { href: '/customers', title: 'Add Customer', sub: 'Manage your clients' },
             { href: '/products', title: 'Add Product', sub: 'Reusable line items' },
           ].map(({ href, title, sub }) => (
             <Link
               key={href}
               href={href}
-              className="border border-gray-100 rounded-xl p-5 hover:border-gray-300 hover:bg-gray-50 transition-all"
+              className="group border border-gray-100 rounded-xl p-5 hover:border-gray-300 hover:shadow-sm transition-all"
             >
-              <p className="text-sm font-semibold text-gray-900 mb-0.5">{title}</p>
+              <p className="text-sm font-semibold text-gray-900 mb-0.5 group-hover:text-gray-700">{title}</p>
               <p className="text-xs text-gray-400">{sub}</p>
             </Link>
           ))}

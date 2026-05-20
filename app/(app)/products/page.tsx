@@ -27,7 +27,7 @@ export default async function ProductsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-          <p className="text-sm text-gray-400 mt-0.5">{(products ?? []).length} total</p>
+          <p className="text-sm text-gray-400 mt-0.5">{(products ?? []).length} product{(products ?? []).length !== 1 ? 's' : ''}</p>
         </div>
       </div>
       <ProductsClient

@@ -26,7 +26,7 @@ export default async function CustomersPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
-          <p className="text-sm text-gray-400 mt-0.5">{(customers ?? []).length} total</p>
+          <p className="text-sm text-gray-400 mt-0.5">{(customers ?? []).length} customer{(customers ?? []).length !== 1 ? 's' : ''}</p>
         </div>
       </div>
       <CustomersClient customers={customers ?? []} companyId={company.id} />

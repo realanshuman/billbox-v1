@@ -53,8 +53,8 @@ export default async function CustomerDetailPage({ params }: Props) {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/customers" className="text-gray-400 hover:text-gray-700 transition-colors text-sm">← Back</Link>
+      <div className="flex items-start gap-4 mb-8">
+        <Link href="/customers" className="text-gray-400 hover:text-gray-700 transition-colors text-sm mt-1">←</Link>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{c.name}</h1>
           <p className="text-sm text-gray-400 mt-0.5">{c.email}</p>
@@ -62,14 +62,14 @@ export default async function CustomerDetailPage({ params }: Props) {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
         {[
           { label: 'Total Billed', value: formatCurrency(totalBilled, currency) },
           { label: 'Total Paid', value: formatCurrency(totalPaid, currency) },
           { label: 'Outstanding', value: formatCurrency(outstanding, currency) },
         ].map((s) => (
-          <div key={s.label} className="border border-gray-100 rounded-xl p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+          <div key={s.label} className="border border-gray-100 rounded-xl p-4 hover:border-gray-200 transition-colors">
+            <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 mb-2">{s.label}</p>
             <p className="text-xl font-bold text-gray-900">{s.value}</p>
           </div>
         ))}

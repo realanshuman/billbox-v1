@@ -6,13 +6,13 @@ import { Plus, Users, Trash2 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
+import { formatDate } from '@/lib/utils'
 import toast from 'react-hot-toast'
 import type { Customer } from '@/lib/types'
 
 interface Props {
   customers: Customer[]
   companyId: string
-  formatDate: (d: string) => string
 }
 
 function CustomerModal({
@@ -86,7 +86,7 @@ function CustomerModal({
   )
 }
 
-export function CustomersClient({ customers, companyId, formatDate }: Props) {
+export function CustomersClient({ customers, companyId }: Props) {
   const router = useRouter()
   const [showModal, setShowModal] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)

@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { formatDate } from '@/lib/utils'
 import { CustomersClient } from './customers-client'
 
 export default async function CustomersPage() {
@@ -30,7 +29,7 @@ export default async function CustomersPage() {
           <p className="text-sm text-gray-400 mt-0.5">{(customers ?? []).length} total</p>
         </div>
       </div>
-      <CustomersClient customers={customers ?? []} companyId={company.id} formatDate={formatDate} />
+      <CustomersClient customers={customers ?? []} companyId={company.id} />
     </div>
   )
 }

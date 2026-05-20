@@ -6,6 +6,7 @@ import { Plus, Package, Trash2 } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
+import { formatCurrency } from '@/lib/utils'
 import toast from 'react-hot-toast'
 import type { Currency, Product } from '@/lib/types'
 
@@ -13,7 +14,6 @@ interface Props {
   products: Product[]
   companyId: string
   defaultCurrency: Currency
-  formatCurrency: (amount: number, currency: Currency) => string
 }
 
 const TAX_OPTIONS = [
@@ -103,7 +103,7 @@ function ProductModal({
   )
 }
 
-export function ProductsClient({ products, companyId, defaultCurrency, formatCurrency }: Props) {
+export function ProductsClient({ products, companyId, defaultCurrency }: Props) {
   const router = useRouter()
   const [showModal, setShowModal] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)

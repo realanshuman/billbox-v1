@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { formatCurrency } from '@/lib/utils'
 import { ProductsClient } from './products-client'
 import type { Currency } from '@/lib/types'
 
@@ -35,7 +34,6 @@ export default async function ProductsPage() {
         products={products ?? []}
         companyId={company.id}
         defaultCurrency={company.currency as Currency}
-        formatCurrency={formatCurrency}
       />
     </div>
   )

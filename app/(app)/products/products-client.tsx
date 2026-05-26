@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Plus, Package, Trash2, Pencil } from 'lucide-react'
+import { Plus, Package, Trash2, Pencil, Layers } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useConfirm } from '@/components/ui/confirm-dialog'
@@ -170,7 +171,9 @@ export function ProductsClient({ products, companyId, defaultCurrency }: Props) 
             <tbody>
               {products.map((product) => (
                 <tr key={product.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">{product.name}</td>
+                  <td className="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    <Link href={`/products/${product.id}`} className="hover:underline">{product.name}</Link>
+                  </td>
                   <td className="px-4 py-3 text-sm text-gray-500 max-w-xs truncate">{product.description ?? '—'}</td>
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                     {formatCurrency(product.unit_price, (product.currency as Currency) ?? defaultCurrency)}
@@ -178,6 +181,9 @@ export function ProductsClient({ products, companyId, defaultCurrency }: Props) 
                   <td className="px-4 py-3 text-sm text-gray-500">{product.tax_rate}%</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
+                      <Link href={`/products/${product.id}`} className="text-gray-300 hover:text-gray-700 transition-colors p-1" aria-label="Inventory">
+                        <Layers className="w-3.5 h-3.5" />
+                      </Link>
                       <button onClick={() => setModal({ open: true, product })} className="text-gray-300 hover:text-gray-700 transition-colors p-1" aria-label="Edit">
                         <Pencil className="w-3.5 h-3.5" />
                       </button>

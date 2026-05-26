@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { auth } from '@clerk/nextjs/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { effectiveStatus } from '@/lib/utils'
 import { Plus, Search } from 'lucide-react'
 import { InvoicesTable, type InvoiceRow } from './invoices-client'
@@ -20,14 +21,15 @@ const tabs: { label: string; value: string }[] = [
 
 export default async function InvoicesPage({ searchParams }: Props) {
   const { status, q } = await searchParams
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { userId } = await auth()
+  if (!userId) redirect('/login')
+
+  const supabase = createServiceClient()
 
   const { data: company } = await supabase
     .from('companies')
     .select('id, currency, invoice_prefix')
-    .eq('user_id', user.id)
+    .eq('user_id', userId)
     .single()
 
   if (!company) redirect('/settings')

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Download, Send, Bell, CheckCircle, XCircle, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { createClient } from '@/lib/supabase/client'
+import { useSupabase } from '@/hooks/use-supabase'
 import { generateInvoicePDF } from '@/lib/pdf'
 import toast from 'react-hot-toast'
 import type { Invoice } from '@/lib/types'
@@ -38,6 +38,7 @@ const PDF_TEMPLATES = [
 
 export function InvoiceActions({ invoice, company }: Props) {
   const router = useRouter()
+  const getSupabase = useSupabase()
   const [loading, setLoading] = useState<string | null>(null)
   const [template, setTemplate] = useState('classic')
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -55,7 +56,7 @@ export function InvoiceActions({ invoice, company }: Props) {
 
   async function updateStatus(status: string) {
     setLoading(status)
-    const supabase = createClient()
+    const supabase = await getSupabase()
     const { error } = await supabase.from('invoices').update({ status }).eq('id', invoice.id)
     if (error) {
       toast.error('Failed to update status')
@@ -74,7 +75,7 @@ export function InvoiceActions({ invoice, company }: Props) {
 
   async function handleSend() {
     setLoading('send')
-    const supabase = createClient()
+    const supabase = await getSupabase()
     await supabase.from('history').insert({
       company_id: invoice.company_id,
       invoice_id: invoice.id,
@@ -90,7 +91,7 @@ export function InvoiceActions({ invoice, company }: Props) {
   }
 
   async function handleRemind() {
-    const supabase = createClient()
+    const supabase = await getSupabase()
     await supabase.from('history').insert({
       company_id: invoice.company_id,
       invoice_id: invoice.id,

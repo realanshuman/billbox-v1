@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { MoreHorizontal, Copy, Trash2, Eye, Download } from 'lucide-react'
 import { StatusBadge } from '@/components/ui/badge'
 import { useConfirm } from '@/components/ui/confirm-dialog'
-import { createClient } from '@/lib/supabase/client'
+import { useSupabase } from '@/hooks/use-supabase'
 import { formatCurrency, formatDate, nextInvoiceNumber } from '@/lib/utils'
 import toast from 'react-hot-toast'
 import type { Currency, InvoiceStatus } from '@/lib/types'
@@ -42,6 +42,7 @@ function RowActions({
 }) {
   const router = useRouter()
   const confirm = useConfirm()
+  const getSupabase = useSupabase()
   const [open, setOpen] = useState(false)
   const [busy, setBusy] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -56,7 +57,7 @@ function RowActions({
 
   async function handleDuplicate() {
     setBusy(true)
-    const supabase = createClient()
+    const supabase = await getSupabase()
     const { data: full } = await supabase
       .from('invoices')
       .select('*, items:invoice_items(*)')
@@ -121,7 +122,7 @@ function RowActions({
     })
     if (!ok) return
     setBusy(true)
-    const supabase = createClient()
+    const supabase = await getSupabase()
     const { error } = await supabase.from('invoices').delete().eq('id', invoice.id)
     if (error) {
       toast.error('Failed to delete')

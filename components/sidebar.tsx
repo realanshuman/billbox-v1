@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
   LayoutDashboard,
@@ -15,8 +15,8 @@ import {
   Menu,
   X,
 } from 'lucide-react'
+import { useClerk } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
-import { createClient } from '@/lib/supabase/client'
 import type { Company } from '@/lib/types'
 
 const navItems = [
@@ -39,13 +39,10 @@ function SidebarContent({
   onNavigate,
 }: SidebarProps & { onNavigate?: () => void }) {
   const pathname = usePathname()
-  const router = useRouter()
+  const { signOut } = useClerk()
 
   async function handleSignOut() {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push('/login')
-    router.refresh()
+    await signOut({ redirectUrl: '/login' })
   }
 
   return (

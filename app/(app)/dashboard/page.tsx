@@ -1,20 +1,22 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { auth } from '@clerk/nextjs/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { StatusBadge } from '@/components/ui/badge'
 import { formatCurrency, formatDate, getGreeting, effectiveStatus } from '@/lib/utils'
 import { TrendingUp, FileText, Clock, FileEdit, ArrowRight, Plus } from 'lucide-react'
 import type { Currency, Invoice, InvoiceStatus } from '@/lib/types'
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { userId } = await auth()
+  if (!userId) redirect('/login')
+
+  const supabase = createServiceClient()
 
   const { data: company } = await supabase
     .from('companies')
     .select('*')
-    .eq('user_id', user.id)
+    .eq('user_id', userId)
     .single()
 
   if (!company) redirect('/settings')

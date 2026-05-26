@@ -6,7 +6,7 @@ import { Plus, Package, Trash2, Pencil } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useConfirm } from '@/components/ui/confirm-dialog'
-import { createClient } from '@/lib/supabase/client'
+import { useSupabase } from '@/hooks/use-supabase'
 import { formatCurrency } from '@/lib/utils'
 import toast from 'react-hot-toast'
 import type { Currency, Product } from '@/lib/types'
@@ -38,6 +38,7 @@ function ProductModal({
   onClose: () => void
   onSaved: () => void
 }) {
+  const getSupabase = useSupabase()
   const [form, setForm] = useState({
     name: existing?.name ?? '',
     description: existing?.description ?? '',
@@ -54,7 +55,7 @@ function ProductModal({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    const supabase = createClient()
+    const supabase = await getSupabase()
     const payload = {
       name: form.name,
       description: form.description || null,
@@ -107,6 +108,7 @@ function ProductModal({
 export function ProductsClient({ products, companyId, defaultCurrency }: Props) {
   const router = useRouter()
   const confirm = useConfirm()
+  const getSupabase = useSupabase()
   const [modal, setModal] = useState<{ open: boolean; product?: Product | null }>({ open: false })
   const [deleting, setDeleting] = useState<string | null>(null)
 
@@ -119,7 +121,7 @@ export function ProductsClient({ products, companyId, defaultCurrency }: Props) 
     })
     if (!ok) return
     setDeleting(product.id)
-    const supabase = createClient()
+    const supabase = await getSupabase()
     const { error } = await supabase.from('products').delete().eq('id', product.id)
     if (error) {
       toast.error('Failed to delete product')

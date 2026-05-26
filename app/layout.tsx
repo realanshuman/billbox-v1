@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from 'react-hot-toast'
 import { ConfirmProvider } from '@/components/ui/confirm-dialog'
 import './globals.css'
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+    <ClerkProvider>
     <html lang="en" className={`${geist.variable} ${geistMono.variable} h-full`}>
       <body className="h-full bg-white text-gray-900 antialiased font-mono">
         <ConfirmProvider>{children}</ConfirmProvider>
@@ -27,5 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </body>
     </html>
+    </ClerkProvider>
   )
 }

@@ -6,7 +6,7 @@ import { Crown, Check } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/client'
+import { useSupabase } from '@/hooks/use-supabase'
 import toast from 'react-hot-toast'
 import type { Company } from '@/lib/types'
 
@@ -26,6 +26,7 @@ const CURRENCIES = [
 
 export function SettingsClient({ company, userId }: Props) {
   const router = useRouter()
+  const getSupabase = useSupabase()
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     name: company?.name ?? '',
@@ -48,7 +49,7 @@ export function SettingsClient({ company, userId }: Props) {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    const supabase = createClient()
+    const supabase = await getSupabase()
 
     if (company) {
       const { error } = await supabase.from('companies').update(form).eq('id', company.id)

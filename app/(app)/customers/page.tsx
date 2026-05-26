@@ -1,16 +1,18 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { auth } from '@clerk/nextjs/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { CustomersClient } from './customers-client'
 
 export default async function CustomersPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { userId } = await auth()
+  if (!userId) redirect('/login')
+
+  const supabase = createServiceClient()
 
   const { data: company } = await supabase
     .from('companies')
     .select('id')
-    .eq('user_id', user.id)
+    .eq('user_id', userId)
     .single()
 
   if (!company) redirect('/settings')

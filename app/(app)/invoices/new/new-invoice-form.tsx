@@ -6,7 +6,7 @@ import { Plus, Trash2 } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/client'
+import { useSupabase } from '@/hooks/use-supabase'
 import { formatCurrency, nextInvoiceNumber } from '@/lib/utils'
 import toast from 'react-hot-toast'
 import type { Company, Currency } from '@/lib/types'
@@ -49,6 +49,7 @@ function calcItem(item: Omit<LineItem, 'total'>): LineItem {
 
 export function NewInvoiceForm({ company, customers, products, existingNumbers }: Props) {
   const router = useRouter()
+  const getSupabase = useSupabase()
   const [loading, setLoading] = useState(false)
   const [customerId, setCustomerId] = useState('')
   const [type, setType] = useState<'tax' | 'proforma'>('tax')
@@ -94,7 +95,7 @@ export function NewInvoiceForm({ company, customers, products, existingNumbers }
     if (items.some((i) => !i.name)) { toast.error('All items must have a name'); return }
 
     setLoading(true)
-    const supabase = createClient()
+    const supabase = await getSupabase()
 
     function buildPayload(number: string) {
       return {

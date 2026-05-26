@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { useSignUp } from '@clerk/nextjs/legacy'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { createCompany } from '@/app/actions/company'
 
 export default function SignupPage() {
   const router = useRouter()
+  const { signUp, isLoaded } = useSignUp()
   const [form, setForm] = useState({ email: '', password: '', company: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -19,35 +21,28 @@ export default function SignupPage() {
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
+    if (!isLoaded) return
     setError('')
     setLoading(true)
-    const supabase = createClient()
-
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-    })
-
-    if (signUpError) {
-      setError(signUpError.message)
-      setLoading(false)
-      return
-    }
-
-    if (data.user) {
-      // Create company record
-      await supabase.from('companies').insert({
-        user_id: data.user.id,
-        name: form.company,
-        email: form.email,
-        invoice_prefix: 'INV',
-        currency: 'INR',
-        plan: 'starter',
+    try {
+      const result = await signUp.create({
+        emailAddress: form.email,
+        password: form.password,
       })
 
-      router.push('/dashboard')
-      router.refresh()
+      if (result.status === 'complete') {
+        await createCompany({ name: form.company, email: form.email })
+        router.push('/dashboard')
+        router.refresh()
+      } else {
+        setError('Sign up incomplete — please check your email to verify.')
+      }
+    } catch (err: unknown) {
+      const clerkErr = err as { errors?: { longMessage?: string; message?: string }[] }
+      const msg = err instanceof Error ? err.message : 'Sign up failed'
+      setError(clerkErr.errors?.[0]?.longMessage ?? clerkErr.errors?.[0]?.message ?? msg)
     }
+    setLoading(false)
   }
 
   return (

@@ -7,7 +7,7 @@ import { Plus, Users, Trash2, Pencil } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useConfirm } from '@/components/ui/confirm-dialog'
-import { createClient } from '@/lib/supabase/client'
+import { useSupabase } from '@/hooks/use-supabase'
 import { formatDate } from '@/lib/utils'
 import toast from 'react-hot-toast'
 import type { Customer } from '@/lib/types'
@@ -39,6 +39,7 @@ function CustomerModal({
   onClose: () => void
   onSaved: () => void
 }) {
+  const getSupabase = useSupabase()
   const [form, setForm] = useState<FormState>({
     name: existing?.name ?? '',
     email: existing?.email ?? '',
@@ -58,7 +59,7 @@ function CustomerModal({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    const supabase = createClient()
+    const supabase = await getSupabase()
     const payload = {
       name: form.name,
       email: form.email,
@@ -117,6 +118,7 @@ function CustomerModal({
 export function CustomersClient({ customers, companyId }: Props) {
   const router = useRouter()
   const confirm = useConfirm()
+  const getSupabase = useSupabase()
   const [modal, setModal] = useState<{ open: boolean; customer?: Customer | null }>({ open: false })
   const [deleting, setDeleting] = useState<string | null>(null)
 
@@ -129,7 +131,7 @@ export function CustomersClient({ customers, companyId }: Props) {
     })
     if (!ok) return
     setDeleting(customer.id)
-    const supabase = createClient()
+    const supabase = await getSupabase()
     const { error } = await supabase.from('customers').delete().eq('id', customer.id)
     if (error) {
       toast.error('Cannot delete — customer may have invoices')
